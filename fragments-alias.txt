@@ -1,0 +1,26 @@
+{
+  twitter{
+    ReactTweets: search(q: "ReactJS"){
+      ...camposTweet
+    }
+    GraphQLTweets: search(q: "GraphQL"){
+      ...camposTweet
+    }
+    JSTweets: search(q: "JavaScript"){
+      ...camposTweet
+    }
+  }
+}
+
+fragment camposTweet on Tweet {
+  text
+  id
+  retweet_count
+  user{
+    name
+    screen_name
+    description
+    tweets_count
+    followers_count
+  }
+}

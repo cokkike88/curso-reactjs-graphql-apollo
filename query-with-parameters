@@ -1,0 +1,18 @@
+query ConsultarTweetsGraphQL($tweet: String!, $total: Int){
+  twitter{
+    search(q: $tweet, count: $total){
+      text
+      id
+    }
+  }
+}
+
+
+
+
+// QUERY VARIABLES
+
+{
+  "tweet": "GraphQL",
+  "total": 3
+}
