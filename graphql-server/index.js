@@ -2,26 +2,20 @@ import express from 'express';
 // GRAPHQL
 import graphqlHTTP from 'express-graphql';
 import schema from './schema';
+// RESOLVERS
+import resoverls from './resolvers';
+import resolvers from './resolvers';
 
-
+const root = resolvers;
 const app = express();
 
 app.get('/', (req, res) => {
     res.send('Todo listo');
 })
 
-// RESOLVER
-const root = {
-    client: ()=> {
-        return {
-            "id": 36546546,
-            "name": "Oscar",
-            "lastName": "Munoz",
-            "company": "oeml",
-            "emails": "email@gmail.com"
-        }
-    }
-};
+
+
+
 
 app.use('/graphql', graphqlHTTP ({
     // QUE ESQUEMA VA A UTILIZAR 
