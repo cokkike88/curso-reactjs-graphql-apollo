@@ -13,6 +13,9 @@
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
+    "graphql-import": "^0.7.1",
+    "graphql-tools": "^4.0.3",
+    "mongoose": "^5.4.2",
     "nodemon": "^1.18.9"
   },
   "devDependencies": {
