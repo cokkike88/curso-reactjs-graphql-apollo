@@ -12,6 +12,7 @@
   }
 }
 
+// ES PARA ENCAPSULAR LOS CAMPOS COMUNES DE VARIAS CONSULTAS
 fragment camposTweet on Tweet {
   text
   id
