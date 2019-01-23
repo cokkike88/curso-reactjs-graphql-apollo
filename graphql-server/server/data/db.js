@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost:32732/clients', { userNewUrlParser: true})
 // client defination
 const clientSchema = new mongoose.Schema({
     name: String,
-    lastname: String,
+    lastName: String,
     company: String,
     emails: Array,
     age: Number,
