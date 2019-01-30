@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost:32732/clients', { userNewUrlParser: true});
+mongoose.connect('mongodb://localhost:32732/clients', { userNewUrlParser: true, useFindAndModify: false});
 
 // client defination
 const clientSchema = new mongoose.Schema({

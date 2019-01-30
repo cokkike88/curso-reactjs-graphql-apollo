@@ -8,3 +8,23 @@ mutation addClient ($input: InputClient){
       lastName
     }
   }`;
+
+  export const editClient = gql `
+  mutation updateClient($input: InputClient){
+    updateClient(input: $input){
+      id
+      name
+      lastName
+      age
+      company
+      type
+      emails {
+        email
+      }
+    }
+}`;
+
+export const removeClient = gql`
+mutation deleteClient($id:ID!){
+  deleteClient(id: $id)
+}`;

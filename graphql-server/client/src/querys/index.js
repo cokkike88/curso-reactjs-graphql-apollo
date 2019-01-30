@@ -12,6 +12,7 @@ export const clients_query = gql`{
 export const findClient = gql`
     query findClient ($id:ID){
         getClient(id: $id){
+            id
             name
             lastName
             company
