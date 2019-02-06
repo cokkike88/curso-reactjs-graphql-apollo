@@ -20,8 +20,10 @@ enum ClientType {
     PREMIUM
 }
 type Query {
-    getClients(limit: Int): [Client]
+    getClients(limit: Int, offset: Int): [Client]
     getClient(id: ID): Client
+    totalClients: String
+    getProducts(limit: Int, offset:Int): [Product]
 }
 input InputOrder {
     product: String
@@ -41,6 +43,22 @@ input InputClient {
     type: ClientType!
     orders: [InputOrder]
 }
+
+""" PRODUCTS """
+type Product {
+    id: ID
+    name: String
+    price: Float
+    stock: Int
+}
+
+""" Campos para los productos nuevos """
+input InputProduct {
+    id: ID
+    name: String!
+    price: Float!
+    stock: Int!
+}
 """ Mutation para crear nuevos clientes """
 type Mutation {      
     # Nombre del resolver, Input con datos y valor que retorna  
@@ -48,4 +66,5 @@ type Mutation {
     addClient(input: InputClient): Client
     updateClient(input: InputClient): Client
     deleteClient(id: ID!) : String
+    addProduct(input: InputProduct) : Product
 }

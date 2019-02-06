@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import { Clients } from './db';
+import { Clients, Products } from './db';
 
 export const resolvers = {
     Query: {
-        getClients : (root, { limit }) => {
-            return Clients.find({}).limit(limit);
+        getClients : (root, { limit, offset }) => {
+            return Clients.find({}).limit(limit).skip(offset);
         },
         getClient : (root, {id}) => {
             return new Promise ((resolve, reject) => {
@@ -15,6 +15,17 @@ export const resolvers = {
                         resolve(client);
                 })
             })
+        },
+        totalClients: (root) => {
+            return new Promise((resolve, reject) => {
+                Clients.countDocuments({}, (error, count) => {
+                    if(error) reject(error);
+                    else resolve(count);
+                })
+            })
+        },
+        getProducts: (root, {limit, offset}) => {
+            return Products.find({}).limit(limit).skip(offset);
         }
     },
     Mutation: {
@@ -60,6 +71,23 @@ export const resolvers = {
                         resolve("Se elimino correctamente");
                 })
             })
-        }
+        },
+        addProduct: (root, {input}) => {
+            const newProduct = new Products({
+                name: input.name,
+                price: input.price,
+                stock: input.stock
+            });
+
+            // mongo db crea el ID que se asigna al objeto
+            newProduct.id = newProduct._id;
+
+            return new Promise((resolve, reject) => {
+                newProduct.save((error) => {
+                    if(error) reject(error);
+                    else resolve(newProduct);
+                })
+            });
+        }        
     }
 }

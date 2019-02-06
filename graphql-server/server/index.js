@@ -2,7 +2,7 @@ import express from 'express';
 // LA NO SE UTILIZA POR QUE SE UTILIZARA APOLLO
 // GRAPHQL
 // import graphqlHTTP from 'express-graphql';
-import { apolloServer, ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 // import { schema } from './data/schema';
 import { typeDefs } from './data/schema';
 import { resolvers } from './data/resolvers';
