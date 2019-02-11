@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { findClient } from '../querys';
+import { findClient } from '../../querys';
 import { Query } from 'react-apollo';
 import EditClientForm from './editClientForm';
-import { editClient } from '../mutations';
+import { editClient } from '../../mutations';
 
 class EditClient extends Component {
     state = { };

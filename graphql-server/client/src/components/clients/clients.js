@@ -1,9 +1,9 @@
 import React, { Fragment, Component } from 'react';
 import { Query, Mutation } from 'react-apollo';
-import { clients_query } from '../querys';
-import { removeClient } from '../mutations';
+import { clients_query } from '../../querys';
+import { removeClient } from '../../mutations';
 import { Link } from 'react-router-dom';
-import Paginador from './paginador';
+import Paginador from '../paginador';
 
 class Clients extends Component {
 

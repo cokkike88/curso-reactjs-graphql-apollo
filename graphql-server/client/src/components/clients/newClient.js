@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 // Mutations
-import { createClient } from '../mutations';
+import { createClient } from '../../mutations';
 import { Mutation } from 'react-apollo';
 import { createFragmentMap } from 'apollo-utilities';
 

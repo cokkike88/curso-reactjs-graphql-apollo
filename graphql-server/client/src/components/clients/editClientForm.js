@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { editClient } from '../mutations';
+import { editClient } from '../../mutations';
 import { Mutation } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 

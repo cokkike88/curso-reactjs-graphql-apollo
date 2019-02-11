@@ -27,3 +27,14 @@ export const findClient = gql`
         }
     }
 `;
+
+export const products_query = gql`
+    query getProducts($limit: Int, $offset: Int){
+        getProducts(limit: $limit, offset: $offset){
+            id
+            name
+            price
+            stock
+        }
+    }
+`;
