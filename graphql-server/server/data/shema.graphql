@@ -23,7 +23,9 @@ type Query {
     getClients(limit: Int, offset: Int): [Client]
     getClient(id: ID): Client
     totalClients: String
+    #Products
     getProducts(limit: Int, offset:Int): [Product]
+    getProduct(id: ID): Product
 }
 input InputOrder {
     product: String
@@ -67,4 +69,6 @@ type Mutation {
     updateClient(input: InputClient): Client
     deleteClient(id: ID!) : String
     addProduct(input: InputProduct) : Product
+    updateProduct(input: InputProduct): Product
+    deleteProduct(id: ID!): String
 }

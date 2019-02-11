@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Clients, Products } from './db';
+import { isRegExp } from 'util';
 
 export const resolvers = {
     Query: {
@@ -26,6 +27,14 @@ export const resolvers = {
         },
         getProducts: (root, {limit, offset}) => {
             return Products.find({}).limit(limit).skip(offset);
+        },
+        getProduct: (root, {id}) => {
+            return new Promise ((resolve, reject) => {
+                Products.findById(id, (error, product) => {
+                    if(error) reject(error);
+                    else resolve(product);
+                })
+            })
         }
     },
     Mutation: {
@@ -64,11 +73,11 @@ export const resolvers = {
         },
         deleteClient : (root, {id}) => {
             return new Promise ((resolve, reject) => {
-                Clients.findOneAndRemove({_id: id}, (error) => {
+                Clients.findOneAndDelete({_id: id}, (error) => {
                     if(error)
                         reject(error);
                     else
-                        resolve("Se elimino correctamente");
+                        resolve("Se elimino correctamente.");
                 })
             })
         },
@@ -88,6 +97,22 @@ export const resolvers = {
                     else resolve(newProduct);
                 })
             });
-        }        
+        },
+        updateProduct: (root, {input}) =>{
+            return new Promise ((resolve, reject) => {
+                Products.findOneAndUpdate({ _id: input.id}, input, { new: true}, (error, product) => {
+                    if (error) reject(error);
+                    else resolve(product);
+                })
+            })
+        },
+        deleteProduct: (root, {id}) => {
+            return new Promise ((resolve, reject) => {
+                Products.findOneAndDelete({_id: id}, (error) => {
+                    if(error) reject(error);
+                    else resolve("Se elimino el producto correctamente.");
+                })
+            })
+        }
     }
 }
