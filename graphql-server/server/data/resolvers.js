@@ -35,6 +35,14 @@ export const resolvers = {
                     else resolve(product);
                 })
             })
+        },
+        totalProducts: (root) => {
+            return new Promise ((resolve, reject) => {
+                Products.countDocuments({}, (error, count) => {
+                    if(error) reject(error);
+                    else resolve(count);
+                })
+            })
         }
     },
     Mutation: {

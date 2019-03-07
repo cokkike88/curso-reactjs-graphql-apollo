@@ -9,7 +9,7 @@ class EditClient extends Component {
     render(){
 
         const { id } = this.props.match.params;
-        console.log(id);
+        // console.log(id);
         return (
             <Fragment>
                 <h2 className="text-center">EDITAR CLIENTE</h2>

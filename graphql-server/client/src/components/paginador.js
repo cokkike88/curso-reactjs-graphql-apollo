@@ -11,7 +11,7 @@ class Paginador extends Component {
         const {actuality} = this.props;  
         const { pages } = this.state.paginador;
         const btnBefore = (actuality > 1) ? <button onClick={this.props.backPage} type="button" className="btn btn-success mr-2">&laquo; Anterior</button> : '';
-        const btnNext = (actuality !== pages) ? <button onClick={this.props.nextPage} type="button" className="btn btn-success mr-2">Siguiente &raquo;</button> : '';
+        const btnNext = (actuality < pages) ? <button onClick={this.props.nextPage} type="button" className="btn btn-success mr-2">Siguiente &raquo;</button> : '';
 
 
         return ( 

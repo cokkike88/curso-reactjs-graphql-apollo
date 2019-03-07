@@ -59,7 +59,7 @@ class NewClient extends Component{
                 <h2 className="text-center">NUEVO CLIENTE</h2>
                 { response }
                 <div className="row justify-content-center">
-                    <Mutation mutation = { createClient } onCompleted={ () => this.props.history.push('/')}>
+                    <Mutation mutation = { createClient } onCompleted={ () => this.props.history.push('/client')}>
                         {
                             addClient => (
                                 <form className="col-md-8 m-3" onSubmit = { e => {

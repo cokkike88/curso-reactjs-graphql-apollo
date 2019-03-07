@@ -3,6 +3,7 @@ import { Query, Mutation } from 'react-apollo';
 import { clients_query } from '../../querys';
 import { removeClient } from '../../mutations';
 import { Link } from 'react-router-dom';
+import Success from '../alerts/success';
 import Paginador from '../paginador';
 
 class Clients extends Component {
@@ -10,6 +11,10 @@ class Clients extends Component {
     limit = 5;
 
     state = {
+        alert: {
+            show: false,
+            message: ''
+        },
         paginador: {
             offset: 0,
             actuality: 1
@@ -35,6 +40,11 @@ class Clients extends Component {
     }
 
     render(){
+
+
+        const {alert: {show, message}} = this.state;
+        const alert = (show) ? <Success strMessage={message}/> : '';
+
         return (
 
             <Query query={clients_query} pollInterval={1000} variables={{limit: this.limit, offset: this.state.paginador.offset}}>
@@ -46,6 +56,7 @@ class Clients extends Component {
                     return (
                         <Fragment>
                             <h2 className="text-center">Listado de clientes</h2>
+                            {alert}
                             <ul className="list-group mt-4">
                                 {data.getClients.map(client => {
         
@@ -58,7 +69,26 @@ class Clients extends Component {
                                                     {client.name} {client.lastName} - { client.company }
                                                 </div>
                                                 <div className="col-md-4 d-flex justify-content-end">
-                                                    <Mutation mutation={removeClient}>
+                                                    <Link to={`/order/new/${client.id}`} className="btn btn-warning d-block d-md-inline-block mr-2">
+                                                        &#43; Pedidos
+                                                    </Link>
+                                                    <Mutation mutation={removeClient} onCompleted={(data) => {
+                                                        this.setState({
+                                                            alert: {
+                                                                show: true,
+                                                                message: data.deleteClient
+                                                            }
+                                                        }, () => {
+                                                            setTimeout(()=>{
+                                                                this.setState({
+                                                                    alert:{
+                                                                        show: false,
+                                                                        message: ''
+                                                                    }
+                                                                })
+                                                            }, 3000)
+                                                        })
+                                                    }}>
                                                         { deleteClient => (
                                                             <button type="button" className="btn btn-danger d-block d-md-inline-block mr-2" onClick={ () => {
                                                                 if(window.confirm('Seguro que desea eliminar este cliente?')){
