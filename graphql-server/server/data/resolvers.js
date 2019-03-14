@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Clients, Products } from './db';
+import { Clients, Products, Orders } from './db';
 import { isRegExp } from 'util';
 
 export const resolvers = {
@@ -89,6 +89,7 @@ export const resolvers = {
                 })
             })
         },
+        // ==================================================== PRODUCTS
         addProduct: (root, {input}) => {
             const newProduct = new Products({
                 name: input.name,
@@ -119,6 +120,35 @@ export const resolvers = {
                 Products.findOneAndDelete({_id: id}, (error) => {
                     if(error) reject(error);
                     else resolve("Se elimino el producto correctamente.");
+                })
+            })
+        },
+        // ========================================================= ORDERS
+        addOrder: (root, {input}) => {
+            const newOrder = new Orders({
+                orders: input.orders,
+                total: input.total,
+                date: new Date(),
+                client: input.client,
+                status: "PENDIENTE"
+            });
+            return new Promise ((resolve, reject) => {
+
+                input.orders.forEach(element => {
+                    
+                    Products.updateOne({_id: element.id}, {
+                        $inc:{
+                            stock: -element.quantity
+                        }
+                    }, function(e) {
+                        if(e) return new Error(e);
+                    })
+                });
+
+
+                newOrder.save((error) => {
+                    if(error) reject(error);
+                    else resolve(newOrder);
                 })
             })
         }

@@ -18,7 +18,7 @@ const clientSchema = new mongoose.Schema({
 const Clients = mongoose.model('clients', clientSchema);
 
 
-
+// product definition
 const productSchema = new mongoose.Schema({
     name: String,
     price: Number,
@@ -27,4 +27,14 @@ const productSchema = new mongoose.Schema({
 
 const Products = mongoose.model('Products', productSchema);
 
-export { Clients, Products };
+const orderSchema = new mongoose.Schema({
+    orders: Array,
+    total: Number,
+    date: Date,
+    client: String,
+    status: String
+})
+
+const Orders = mongoose.model('Orders', orderSchema);
+
+export { Clients, Products, Orders };

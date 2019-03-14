@@ -6,11 +6,6 @@ type Client {
     emails: [Email]
     age: Int
     type: ClientType
-    orders: [Order]
-}
-type Order {
-    product: String
-    price: Float
 }
 type Email {
     email: String
@@ -28,10 +23,6 @@ type Query {
     getProduct(id: ID): Product
     totalProducts: String
 }
-input InputOrder {
-    product: String
-    price: Float
-}
 input InputEmail {
     email: String
 }
@@ -43,11 +34,10 @@ input InputClient {
     company: String!
     emails: [InputEmail]
     age: Int!
-    type: ClientType!
-    orders: [InputOrder]
+    type: ClientType!    
 }
 
-""" PRODUCTS """
+""" ============================================================ PRODUCTS """
 type Product {
     id: ID
     name: String
@@ -62,14 +52,52 @@ input InputProduct {
     price: Float!
     stock: Int!
 }
-""" Mutation para crear nuevos clientes """
+""" ============================================================ ORDERS """
+type Order {
+    id:ID
+    orders: [OrderProduct]
+    total: Float
+    date: String
+    client: ID
+    status: OrderStatus
+}
+
+type OrderProduct {
+    id: ID,
+    quantity: Int
+}
+
+input InputOrder {
+    id:ID
+    orders: [InputOrderProduct]
+    total: Float
+    date: String
+    client: ID
+    status: OrderStatus
+}
+
+input InputOrderProduct {
+    id: ID,
+    quantity: Int
+}
+
+enum OrderStatus {
+    PENDING
+    COMPLETED
+    CANCELED
+}
+
 type Mutation {      
     # Nombre del resolver, Input con datos y valor que retorna  
     """ Permite crear nuevos clientes """
+    # CLIENTS
     addClient(input: InputClient): Client
     updateClient(input: InputClient): Client
     deleteClient(id: ID!) : String
+    # PRODUCTS
     addProduct(input: InputProduct) : Product
     updateProduct(input: InputProduct): Product
     deleteProduct(id: ID!): String
+    # ORDERS
+    addOrder(input: InputOrder) : Order
 }
