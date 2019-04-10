@@ -7,6 +7,10 @@ type Client {
     age: Int
     type: ClientType
 }
+type TopClient {
+    total: Float
+    client: [Client]
+}
 type Email {
     email: String
 }
@@ -19,9 +23,12 @@ type Query {
     getClient(id: ID): Client
     totalClients: String
     #Products
-    getProducts(limit: Int, offset:Int): [Product]
+    getProducts(limit: Int, offset:Int, stock:Boolean): [Product]
     getProduct(id: ID): Product
     totalProducts: String
+    #Orders
+    getOrders(clientId: String): [Order]
+    topClients: [TopClient]
 }
 input InputEmail {
     email: String
@@ -100,4 +107,5 @@ type Mutation {
     deleteProduct(id: ID!): String
     # ORDERS
     addOrder(input: InputOrder) : Order
+    updateOrderStatus(input: InputOrder): String
 }

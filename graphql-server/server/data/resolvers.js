@@ -25,8 +25,12 @@ export const resolvers = {
                 })
             })
         },
-        getProducts: (root, {limit, offset}) => {
-            return Products.find({}).limit(limit).skip(offset);
+        getProducts: (root, {limit, offset, stock}) => {
+            let filter ;
+            if(stock){
+                filter = { stock: {$gt: 0}};
+            }
+            return Products.find(filter).limit(limit).skip(offset);
         },
         getProduct: (root, {id}) => {
             return new Promise ((resolve, reject) => {
@@ -41,6 +45,52 @@ export const resolvers = {
                 Products.countDocuments({}, (error, count) => {
                     if(error) reject(error);
                     else resolve(count);
+                })
+            })
+        },
+        getOrders: (root, {clientId}) => {
+            return new Promise((resolve, reject) => {
+                Orders.find({client: clientId}, (error, order) => {
+                    if(error) {
+                        console.log(`error find ${error}`);
+                        reject(error);
+                    }
+                    else {
+                        // console.log(`resultado find ${order}`);
+                        resolve(order);
+                    }
+                })
+            })
+        },
+        topClients: (root) => {
+            return new Promise((resolve, reject) => {
+                Orders.aggregate([
+                    {
+                        $match: { status: "COMPLETED"}
+                    },
+                    {
+                        $group: {
+                            _id: "$client",
+                            total: { $sum: "$total" }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "clients",
+                            localField: "_id",
+                            foreignField: "_id",
+                            as: "client"
+                        }
+                    },
+                    {
+                        $sort: { total: -1}
+                    },
+                    {
+                        $limit: 10
+                    }
+                ], (error, result) => {
+                    if(error) reject(error);
+                    else resolve(result);
                 })
             })
         }
@@ -130,26 +180,47 @@ export const resolvers = {
                 total: input.total,
                 date: new Date(),
                 client: input.client,
-                status: "PENDIENTE"
+                status: "PENDING"
             });
+
+            newOrder.id = newOrder._id;
+
             return new Promise ((resolve, reject) => {
-
-                input.orders.forEach(element => {
-                    
-                    Products.updateOne({_id: element.id}, {
-                        $inc:{
-                            stock: -element.quantity
-                        }
-                    }, function(e) {
-                        if(e) return new Error(e);
-                    })
-                });
-
-
+                
                 newOrder.save((error) => {
                     if(error) reject(error);
                     else resolve(newOrder);
                 })
+            })
+        },
+        updateOrderStatus: (root, {input}) => {
+
+            let { status } = input;
+            let instruction;
+            if(status === 'COMPLETED'){
+                instruction = '-';
+            }
+            else if(status === 'CANCELED'){
+                instruction = '+';
+            }
+
+            input.orders.forEach(element => {
+                    
+                Products.updateOne({_id: element.id}, {
+                    $inc:{
+                        stock: `${instruction}${element.quantity}`
+                    }
+                }, function(e) {
+                    if(e) return new Error(e);
+                })
+            });
+
+
+            return new Promise ((resolve, reject) => {
+                Orders.findOneAndUpdate({_id: input.id}, input, {new: true}, (error) => {
+                    if(error) reject(error);
+                    else resolve('Se actualizo la orden');
+                });
             })
         }
     }

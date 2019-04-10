@@ -65,12 +65,15 @@ class Clients extends Component {
                                     return(
                                         <li key={client.id} className="list-group-item">
                                             <div className="row justify-content-between align-items-center">
-                                                <div className="col-md-8 d-flex justify-content-between align-items-center">
+                                                <div className="col-md-6 d-flex justify-content-between align-items-center">
                                                     {client.name} {client.lastName} - { client.company }
                                                 </div>
-                                                <div className="col-md-4 d-flex justify-content-end">
+                                                <div className="col-md-6 d-flex justify-content-end">                                                    
                                                     <Link to={`/order/new/${client.id}`} className="btn btn-warning d-block d-md-inline-block mr-2">
                                                         &#43; Pedidos
+                                                    </Link>
+                                                    <Link to={`/order/${client.id}`} className="btn btn-primary d-block d-md-inline-block mr-2">
+                                                        Ver Pedidos
                                                     </Link>
                                                     <Mutation mutation={removeClient} onCompleted={(data) => {
                                                         this.setState({

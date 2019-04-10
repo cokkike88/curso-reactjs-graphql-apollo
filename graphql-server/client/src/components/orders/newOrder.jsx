@@ -17,13 +17,13 @@ class NewOrder extends Component {
                         <ClientData clientId={id} />
                     </div>
                     <div className="col-md-9">
-                    <Query query={products_query}>
+                    <Query query={products_query} variables={{stock: true}} pollInterval={1000}>
                         {({ loading, error, data}) => {
                             if(loading) return (
-                                <div>
-                                    <div className="spinner"></div>
+                                <div className="spinner">
                                     <div className="double-bounce1"></div>
                                     <div className="double-bounce2"></div>
+                                    <div className="double-bounce3"></div>
                                 </div>
                             );
 

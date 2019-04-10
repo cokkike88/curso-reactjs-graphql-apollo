@@ -16,7 +16,7 @@ class EditProduct extends Component {
                             if(loading) return 'Cargando...';
                             if(error) return `Error! ${error.message}`;
 
-                            console.log(data);
+                            // console.log(data);
                             return(
                                 // el refetch es para refrescar el query
                                 <EditProductForm product={data} id={id} refetch={refetch} />

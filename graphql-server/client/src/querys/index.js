@@ -31,8 +31,8 @@ export const findClient = gql`
 
 // PRODUCTS
 export const products_query = gql`
-    query ($limit: Int, $offset: Int){
-        getProducts(limit: $limit, offset: $offset){
+    query ($limit: Int, $offset: Int, $stock: Boolean){
+        getProducts(limit: $limit, offset: $offset, stock: $stock){
             id
             name
             price
@@ -49,4 +49,33 @@ export const findProduct = gql`
         stock
         }
     } 
+`;
+
+// ORDERS
+export const getOrders = gql`
+    query getOrdersByClient ($clientId: String){
+        getOrders(clientId: $clientId){
+            id
+            orders{
+            id
+            quantity
+            }
+            total
+            date            
+            status
+        }
+    }
+`;
+
+// GRAFICAS
+export const getTopClients = gql`
+    query GetTopClients {
+        topClients{
+            total
+            client {
+            name
+            
+            }
+        }
+    }
 `;

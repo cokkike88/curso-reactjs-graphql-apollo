@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import Select from 'react-select';
 import Animated from 'react-select/lib/animated';
 import Review from './review';
+import CreateOrder from './createOrder';
+import Error from '../alerts/error';
 
 class OrderContent extends Component {
     state = { 
@@ -67,9 +69,13 @@ class OrderContent extends Component {
     }
 
     render() { 
+
+        let message = (this.state.total < 0) ? <Error strMessage="Las cantidades no pueden ser negativas" /> : '';
+
         return ( 
             <Fragment>
                 <h2 className="text-center my-5">Seleccionar productos</h2>
+                {message}
                 <Select
                     onChange={this.selectedProduct}
                     options={this.props.products}
@@ -83,12 +89,16 @@ class OrderContent extends Component {
                 <Review products={this.state.products}
                     changeQuantity={this.changeQuantity}
                     deleteProduct={this.deleteProduct}/>
-                    <p className="font-weight-bold float-right mt-3">
-                        Total:
-                        <span className="font-weight-normal">
-                            $ {this.state.total}
-                        </span>
-                    </p>
+                <p className="font-weight-bold float-right mt-3">
+                    Total:
+                    <span className="font-weight-normal">
+                        $ {this.state.total}
+                    </span>
+                </p>
+                <CreateOrder
+                    products={this.state.products}
+                    total={this.state.total} 
+                    clientId={this.props.clientId}/>
             </Fragment>
          );
     }

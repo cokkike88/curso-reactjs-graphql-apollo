@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema({
     orders: Array,
     total: Number,
     date: Date,
-    client: String,
+    client: mongoose.Types.ObjectId,
     status: String
 })
 

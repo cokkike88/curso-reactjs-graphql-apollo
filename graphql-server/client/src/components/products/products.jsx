@@ -68,8 +68,22 @@ class Products extends Component {
                                     <tbody>
                                         {data.getProducts.map(product => {
                                             const {id} = product;
+                                            let {stock} = product;
+                                            let className = '';
+
+                                            if(stock < 50){
+                                                className = 'table-danger text-light'
+                                            }
+                                            else if (stock >= 50 && stock < 100){
+                                                className = 'table-warning text-light';
+                                            }
+                                            else{
+                                                className = '';
+                                            }
+
+
                                             return(
-                                                <tr key={id}>
+                                                <tr key={id} className={className}>
                                                     <td>{product.name}</td>
                                                     <td>{product.price}</td>
                                                     <td>{product.stock}</td>

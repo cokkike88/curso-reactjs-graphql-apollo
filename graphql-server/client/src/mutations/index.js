@@ -48,7 +48,22 @@ export const updateProduct = gql`
   }
 `;
 
+// ORDERS
+export const createOrder = gql`
+  mutation newOrder($input : InputOrder){
+    addOrder(input: $input){
+      id
+    }
+  }
+`;
+
 export const removeProduct = gql`
 mutation removeProduct($id: ID!){
   deleteProduct(id: $id)
 }`;
+
+export const editOrderStatus = gql`
+  mutation editOrderStatus($input: InputOrder){
+    updateOrderStatus(input: $input)
+  }
+`;
