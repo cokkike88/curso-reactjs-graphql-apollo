@@ -94,6 +94,11 @@ enum OrderStatus {
     CANCELED
 }
 
+""" ============================================================ SECURITY """
+type Token {
+    token: String
+}
+
 type Mutation {      
     # Nombre del resolver, Input con datos y valor que retorna  
     """ Permite crear nuevos clientes """
@@ -108,4 +113,7 @@ type Mutation {
     # ORDERS
     addOrder(input: InputOrder) : Order
     updateOrderStatus(input: InputOrder): String
+    # USERS
+    createUser(user: String!, pass: String!): String
+    authUser(user: String!, pass: String!): Token
 }

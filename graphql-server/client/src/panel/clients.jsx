@@ -15,7 +15,7 @@ const data2 = [
 
 const Clients = () => {
     return (  
-        <Query query={getTopClients}>
+        <Query query={getTopClients} pollInterval={1000}>
             {({loading, error, data}) => {
                 if(error) return `Error ${error.message}`;
                 if(loading) return 'Cargando...';

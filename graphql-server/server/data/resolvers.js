@@ -1,6 +1,18 @@
 import mongoose from 'mongoose';
-import { Clients, Products, Orders } from './db';
+import { Clients, Products, Orders, Users } from './db';
 import { isRegExp } from 'util';
+import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+
+
+dotenv.config({path: 'variables.env'});
+const createToken = (userEntity, secret, expiresIn) => {
+    let {user} = userEntity;
+
+    return jwt.sign({user}, secret, {expiresIn});
+}
+
 
 export const resolvers = {
     Query: {
@@ -222,6 +234,40 @@ export const resolvers = {
                     else resolve('Se actualizo la orden');
                 });
             })
+        },
+        // USERS
+        createUser: async (root, {user, pass}) => {
+
+            let userExist = await Users.findOne({user});
+
+            if(userExist){
+                throw new Error('El usuario ya existe');
+            }
+
+            const newUser = await new Users({
+                user,
+                pass
+            }).save();
+
+            return "Usuario creado correctamente";
+            // console.log(newUser);
+        },
+        authUser: async (root, {user, pass}) => {
+            let userEntity = await Users.findOne({user});
+
+            if(!userEntity){
+                throw new Error('Usuarion no encontrado');
+            }
+
+            let correctPass = await bcrypt.compare(pass, userEntity.pass);
+
+            if(!correctPass){
+                throw new Error("Password Incorrecto");
+            }
+            
+            return {
+                token: createToken(userEntity, process.env.SECRET, '1hr')
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { buildSchemaFromTypeDefinitions } from 'graphql-tools';
+import bcrypt from 'bcrypt';
 
 mongoose.Promise = global.Promise;
 
@@ -37,4 +39,28 @@ const orderSchema = new mongoose.Schema({
 
 const Orders = mongoose.model('Orders', orderSchema);
 
-export { Clients, Products, Orders };
+// USERS
+
+const userSchema = new mongoose.Schema({
+    user: String,
+    pass: String
+});
+
+userSchema.pre('save', function(next){
+    if(!this.isModified('pass')){
+        return next();
+    }
+    bcrypt.genSalt(10, (err, salt) => {
+        if(err) return next(err);
+        bcrypt.hash(this.pass, salt, (err, hash) => {
+            if(err) return next(err);
+            this.pass = hash;
+            next();
+        })
+    })
+})
+
+const Users = mongoose.model('Users', userSchema);
+
+
+export { Clients, Products, Orders, Users };

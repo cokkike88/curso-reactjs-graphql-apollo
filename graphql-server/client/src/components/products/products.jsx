@@ -71,10 +71,10 @@ class Products extends Component {
                                             let {stock} = product;
                                             let className = '';
 
-                                            if(stock < 50){
+                                            if(stock < 5){
                                                 className = 'table-danger text-light'
                                             }
-                                            else if (stock >= 50 && stock < 100){
+                                            else if (stock >= 5 && stock < 10){
                                                 className = 'table-warning text-light';
                                             }
                                             else{
