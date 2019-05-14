@@ -105,6 +105,16 @@ export const resolvers = {
                     else resolve(result);
                 })
             })
+        },
+        getUser: (root, args, {currentUser}) => {
+            if(!currentUser){
+                return null;
+            }
+            console.log(currentUser);
+
+            const user = Users.findOne({user: currentUser.user });
+
+            return user;
         }
     },
     Mutation: {
@@ -265,8 +275,11 @@ export const resolvers = {
                 throw new Error("Password Incorrecto");
             }
             
+            let token = createToken(userEntity, process.env.SECRET, '1hr'); 
+            console.log('TOKEN', token);
+
             return {
-                token: createToken(userEntity, process.env.SECRET, '1hr')
+                token
             }
         }
     }

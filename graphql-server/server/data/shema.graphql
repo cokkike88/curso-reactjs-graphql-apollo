@@ -29,6 +29,8 @@ type Query {
     #Orders
     getOrders(clientId: String): [Order]
     topClients: [TopClient]
+    #Users
+    getUser: User
 }
 input InputEmail {
     email: String
@@ -97,6 +99,10 @@ enum OrderStatus {
 """ ============================================================ SECURITY """
 type Token {
     token: String
+}
+
+type User {
+    user: String
 }
 
 type Mutation {      
