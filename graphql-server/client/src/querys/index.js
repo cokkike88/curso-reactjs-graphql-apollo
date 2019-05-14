@@ -79,3 +79,12 @@ export const getTopClients = gql`
         }
     }
 `;
+
+// USERS
+export const CurrentUser = gql`
+    query getUser {
+        getUser{
+            user
+        }
+    }
+`;
