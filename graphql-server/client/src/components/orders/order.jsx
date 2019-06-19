@@ -3,6 +3,7 @@ import { findProduct } from '../../querys';
 import { Query, Mutation } from 'react-apollo';
 import ProductReview from './productReview';
 import { editOrderStatus } from '../../mutations';
+import '../../orders.css';
 
 const Order = (props) => {
 
@@ -60,12 +61,9 @@ const Order = (props) => {
                     </p> 
                     <p className="card-text font-weight-bold">Fecha Pedido: 
                         <span className="font-weight-normal"> {date.toLocaleDateString('es-GT')}</span>
-                    </p>
-                    <p className="card-text font-weight-bold">Total: 
-                        <span className="font-weight-normal"> $ {order.total}</span>
-                    </p>
+                    </p>                    
 
-                    <h3 className="card-text text-center mb-3">Artículos del pedido</h3>
+                    <h3 className="bold-text card-text text-center mb-3">Artículos del pedido</h3>
                     {
                         order.orders.map((product, index) => {
                             // console.log('producto', product);
@@ -94,6 +92,10 @@ const Order = (props) => {
                             )
                         })
                     }
+                    <div className="d-flex align-items-center justify-content-end">
+                        <p className="card-text bold-text mr-1 bg-yellow">Total:</p>
+                        <p className="font-weight-normal"> $ {order.total}</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,14 +2,14 @@ import gql from 'graphql-tag';
 
 // CLIENTS
 export const clients_query = gql`
-    query getClients($limit: Int, $offset: Int){
-        getClients(limit: $limit, offset: $offset){
+    query getClients($limit: Int, $offset: Int, $sellerId: String){
+        getClients(limit: $limit, offset: $offset, sellerId: $sellerId){
             id
             name
             lastName
             company
         }
-        totalClients
+        totalClients(sellerId: $sellerId)
     }
 `;
 
@@ -44,9 +44,9 @@ export const products_query = gql`
 export const findProduct = gql`
     query getProduct($id: ID){
         getProduct(id: $id){
-        name
-        price
-        stock
+            name
+            price
+            stock
         }
     } 
 `;
@@ -57,8 +57,8 @@ export const getOrders = gql`
         getOrders(clientId: $clientId){
             id
             orders{
-            id
-            quantity
+                id
+                quantity
             }
             total
             date            
@@ -73,8 +73,18 @@ export const getTopClients = gql`
         topClients{
             total
             client {
-            name
-            
+                name            
+            }
+        }
+    }
+`;
+
+export const getTopSellers = gql`
+    query GetTopSellers {
+        topSellers{
+            total
+            seller {
+                name            
             }
         }
     }
@@ -84,7 +94,10 @@ export const getTopClients = gql`
 export const CurrentUser = gql`
     query getUser {
         getUser{
-            user
+            id,
+            user,
+            name,
+            role
         }
     }
 `;

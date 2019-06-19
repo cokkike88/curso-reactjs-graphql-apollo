@@ -14,7 +14,8 @@ const clientSchema = new mongoose.Schema({
     emails: Array,
     age: Number,
     type: String,
-    orders: Array
+    orders: Array,
+    sellerId: mongoose.Types.ObjectId
 })
 
 const Clients = mongoose.model('clients', clientSchema);
@@ -34,7 +35,8 @@ const orderSchema = new mongoose.Schema({
     total: Number,
     date: Date,
     client: mongoose.Types.ObjectId,
-    status: String
+    status: String,
+    sellerId: mongoose.Types.ObjectId
 })
 
 const Orders = mongoose.model('Orders', orderSchema);
@@ -43,7 +45,9 @@ const Orders = mongoose.model('Orders', orderSchema);
 
 const userSchema = new mongoose.Schema({
     user: String,
-    pass: String
+    name: String,
+    pass: String,
+    role: String
 });
 
 userSchema.pre('save', function(next){

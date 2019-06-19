@@ -70,8 +70,8 @@ export const editOrderStatus = gql`
 
 // USERS
 export const createUser = gql `
-  mutation addUser($user: String!, $pass: String!){
-    createUser(user: $user, pass: $pass)
+  mutation addUser($user: String!, $name: String, $pass: String!, $role: String){
+    createUser(user: $user, name: $name, pass: $pass, role: $role)
   }
 `;
 

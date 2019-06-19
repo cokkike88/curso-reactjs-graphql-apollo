@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 // COMPONENTS
@@ -19,7 +19,7 @@ import Session from './components/Session';
 const App = ({refetch, session}) => {
 
   const { getUser } = session;
-  const message = (getUser) ? `Bienvenido: ${getUser.user}` : <Redirect to="/login" />;
+  const message = (getUser) ? `Bienvenido: ${getUser.name}` : <Redirect to="/login" />;
   console.log(session);
   return (    
     <Router>
@@ -28,16 +28,16 @@ const App = ({refetch, session}) => {
         <div className='container'>
           <p className="text-right">{message}</p>
           <Switch>
-            <Route exact path="/client" component={Clients} />
-            <Route exact path="/client/new" component={NewClient} />
+            <Route exact path="/client" render={() => <Clients session={session} />} />
+            <Route exact path="/client/new" render={() => <NewClient session={session} />} />
             <Route exact path="/client/edit/:id" component={EditClient} />
             <Route exact path="/product/new" component={NewProduct} />
             <Route exact path="/product" component={Products} />
             <Route exact path="/product/edit/:id" component={EditProduct} />
-            <Route exact path="/order/new/:id" component={NewOrder} />
+            <Route exact path="/order/new/:id" render={() => <NewOrder session={session} />} />
             <Route exact path="/order/:clientId" component={OrdersClient} />
             <Route exact path="/panel" component={Panel} />
-            <Route exact path="/register" component={Register} />
+            <Route exact path="/register" render={() => <Register session={session} />}  />
             <Route exact path="/login" render={() => <Login refetch={refetch} />} />
           </Switch>
         </div>

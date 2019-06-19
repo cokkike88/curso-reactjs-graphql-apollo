@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
 
+const ObjectId = mongoose.Types.ObjectId;
+
 dotenv.config({path: 'variables.env'});
 const createToken = (userEntity, secret, expiresIn) => {
     let {user} = userEntity;
@@ -16,8 +18,12 @@ const createToken = (userEntity, secret, expiresIn) => {
 
 export const resolvers = {
     Query: {
-        getClients : (root, { limit, offset }) => {
-            return Clients.find({}).limit(limit).skip(offset);
+        getClients : (root, { limit, offset, sellerId }) => {
+            let filter;
+            if(sellerId){
+                filter = {sellerId : new ObjectId(sellerId)};
+            }
+            return Clients.find(filter).limit(limit).skip(offset);
         },
         getClient : (root, {id}) => {
             return new Promise ((resolve, reject) => {
@@ -29,9 +35,13 @@ export const resolvers = {
                 })
             })
         },
-        totalClients: (root) => {
+        totalClients: (root, {sellerId}) => {
             return new Promise((resolve, reject) => {
-                Clients.countDocuments({}, (error, count) => {
+                let filter;
+                if(sellerId){
+                    filter = {sellerId : new ObjectId(sellerId)};
+                }
+                Clients.countDocuments(filter, (error, count) => {
                     if(error) reject(error);
                     else resolve(count);
                 })
@@ -106,6 +116,38 @@ export const resolvers = {
                 })
             })
         },
+        topSellers: (root) => {
+            return new Promise((resolve, reject) => {
+                Orders.aggregate([
+                    {
+                        $match: { status: "COMPLETED"}
+                    },
+                    {
+                        $group: {
+                            _id: "$sellerId",
+                            total: { $sum: "$total" }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "_id",
+                            foreignField: "_id",
+                            as: "seller"
+                        }
+                    },
+                    {
+                        $sort: { total: -1}
+                    },
+                    {
+                        $limit: 10
+                    }
+                ], (error, result) => {
+                    if(error) reject(error);
+                    else resolve(result);
+                })
+            })
+        },
         getUser: (root, args, {currentUser}) => {
             if(!currentUser){
                 return null;
@@ -127,7 +169,8 @@ export const resolvers = {
                 emails: input.emails,
                 age: input.age,
                 type: input.type,
-                orders: input.orders
+                orders: input.orders,
+                sellerId: input.sellerId
             })
             // newClient.id = newClient._id;
 
@@ -202,7 +245,8 @@ export const resolvers = {
                 total: input.total,
                 date: new Date(),
                 client: input.client,
-                status: "PENDING"
+                status: "PENDING",
+                sellerId: input.sellerId
             });
 
             newOrder.id = newOrder._id;
@@ -245,8 +289,8 @@ export const resolvers = {
                 });
             })
         },
-        // USERS
-        createUser: async (root, {user, pass}) => {
+        // ========================================================= USERS
+        createUser: async (root, {user, name, pass, role}) => {
 
             let userExist = await Users.findOne({user});
 
@@ -256,7 +300,9 @@ export const resolvers = {
 
             const newUser = await new Users({
                 user,
-                pass
+                name,
+                pass,
+                role
             }).save();
 
             return "Usuario creado correctamente";

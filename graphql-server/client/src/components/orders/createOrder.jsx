@@ -29,7 +29,8 @@ const CreateOrder = (props) => {
                         const input = {
                             orders: productsInput,
                             total: props.total,
-                            client: props.clientId
+                            client: props.clientId,
+                            sellerId: props.sellerId
                         }
 
                         // console.log('input', input);

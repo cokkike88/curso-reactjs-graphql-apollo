@@ -98,7 +98,8 @@ class OrderContent extends Component {
                 <CreateOrder
                     products={this.state.products}
                     total={this.state.total} 
-                    clientId={this.props.clientId}/>
+                    clientId={this.props.clientId}
+                    sellerId={this.props.sellerId} />
             </Fragment>
          );
     }

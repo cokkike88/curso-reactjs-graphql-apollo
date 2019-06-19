@@ -1,36 +1,36 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import { getTopClients } from '../querys';
+import { getTopSellers } from '../querys';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 
-const Clients = () => {
+const Sellers = () => {
     return (  
-        <Query query={getTopClients} pollInterval={1000}>
+        <Query query={getTopSellers} pollInterval={1000}>
             {({loading, error, data}) => {
                 if(error) return `Error ${error.message}`;
                 if(loading) return 'Cargando...';
 
                 console.log(data);
-                let topClientGraphic = [];
+                let topSellerGraphic = [];
 
-                data.topClients.map((order, index) => {
-                    topClientGraphic[index] = {
-                        ...order.client[0],
+                data.topSellers.map((order, index) => {
+                    topSellerGraphic[index] = {
+                        ...order.seller[0],
                         total: order.total
                     }
                 });
 
-                console.log(topClientGraphic);
+                console.log(topSellerGraphic);
 
                 return (
-                    <BarChart width={600} height={300} data={topClientGraphic}
+                    <BarChart width={600} height={300} data={topSellerGraphic}
                             margin={{top: 5, right: 30, left: 20, bottom: 5}}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="name"/>
                         <YAxis/>
                         <Tooltip/>
                         <Legend />
-                        <Bar dataKey="total" fill="#10a98b" />
+                        <Bar dataKey="total" fill="#6148b9" />
                     </BarChart>
                 )
             }}
@@ -38,4 +38,4 @@ const Clients = () => {
     );
 }
  
-export default Clients;
+export default Sellers;

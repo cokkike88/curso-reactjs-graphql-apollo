@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 // Mutations
 import { createClient } from '../../mutations';
 import { Mutation } from 'react-apollo';
-import { createFragmentMap } from 'apollo-utilities';
+import { withRouter } from 'react-router-dom';
 
 class NewClient extends Component{
     state = {
@@ -52,6 +52,7 @@ class NewClient extends Component{
 
         const { error } = this.state;
         let response = (error) ? <p className="alert alert-danger p-3 text-center">Todos los campos son obligatorios</p>: '';
+        let sellerId = this.props.session.getUser.id;
 
 
         return (
@@ -85,7 +86,8 @@ class NewClient extends Component{
                                             company,
                                             age: Number(age),
                                             type,
-                                            emails
+                                            emails,
+                                            sellerId
                                         };
                                         // call mutation
                                         addClient({
@@ -197,4 +199,4 @@ class NewClient extends Component{
     }
 }
 
-export default NewClient;
+export default withRouter(NewClient);

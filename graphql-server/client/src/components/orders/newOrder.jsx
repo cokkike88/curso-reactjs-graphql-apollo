@@ -3,11 +3,14 @@ import ClientData from './clientData';
 import { Query } from 'react-apollo';
 import { products_query } from '../../querys';
 import OrderContent from './orderContent';
+import { withRouter } from 'react-router-dom';
 
 class NewOrder extends Component {
     state = {  }
     render() { 
         let {id} = this.props.match.params;
+        // console.log(this.props.session);
+        let sellerId = this.props.session.getUser.id;
         
         return ( 
             <Fragment>
@@ -31,7 +34,11 @@ class NewOrder extends Component {
                             console.log(data);
 
                             return (
-                                <OrderContent products={data.getProducts} clientId={id} ></OrderContent>
+                                <OrderContent 
+                                    products={data.getProducts} 
+                                    clientId={id} 
+                                    sellerId={sellerId}
+                                />
                             )
                             
                         }}
@@ -43,4 +50,4 @@ class NewOrder extends Component {
     }
 }
  
-export default NewOrder;
+export default withRouter(NewOrder);

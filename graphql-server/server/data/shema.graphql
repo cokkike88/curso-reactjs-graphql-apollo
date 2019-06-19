@@ -11,6 +11,10 @@ type TopClient {
     total: Float
     client: [Client]
 }
+type TopSeller {
+    total: Float
+    seller: [User]
+}
 type Email {
     email: String
 }
@@ -19,9 +23,9 @@ enum ClientType {
     PREMIUM
 }
 type Query {
-    getClients(limit: Int, offset: Int): [Client]
+    getClients(limit: Int, offset: Int, sellerId: String): [Client]
     getClient(id: ID): Client
-    totalClients: String
+    totalClients(sellerId: String): String
     #Products
     getProducts(limit: Int, offset:Int, stock:Boolean): [Product]
     getProduct(id: ID): Product
@@ -29,6 +33,7 @@ type Query {
     #Orders
     getOrders(clientId: String): [Order]
     topClients: [TopClient]
+    topSellers: [TopSeller]
     #Users
     getUser: User
 }
@@ -43,7 +48,8 @@ input InputClient {
     company: String!
     emails: [InputEmail]
     age: Int!
-    type: ClientType!    
+    type: ClientType!,
+    sellerId: ID
 }
 
 """ ============================================================ PRODUCTS """
@@ -82,7 +88,8 @@ input InputOrder {
     total: Float
     date: String
     client: ID
-    status: OrderStatus
+    status: OrderStatus,
+    sellerId: ID
 }
 
 input InputOrderProduct {
@@ -102,7 +109,10 @@ type Token {
 }
 
 type User {
-    user: String
+    id: ID,
+    user: String,
+    name: String,
+    role: String
 }
 
 type Mutation {      
@@ -120,6 +130,6 @@ type Mutation {
     addOrder(input: InputOrder) : Order
     updateOrderStatus(input: InputOrder): String
     # USERS
-    createUser(user: String!, pass: String!): String
+    createUser(user: String!, name: String, pass: String!, role: String): String
     authUser(user: String!, pass: String!): Token
 }

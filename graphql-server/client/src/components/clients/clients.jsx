@@ -44,10 +44,17 @@ class Clients extends Component {
 
         const {alert: {show, message}} = this.state;
         const alert = (show) ? <Success strMessage={message}/> : '';
+        
+        let sellerId;
+        let {role} = this.props.session.getUser;
+        if(role !== 'Admin'){
+            sellerId = this.props.session.getUser.id;
+        }
+        // console.log(this.props.session.getUser.id);
 
         return (
 
-            <Query query={clients_query} pollInterval={1000} variables={{limit: this.limit, offset: this.state.paginador.offset}}>
+            <Query query={clients_query} pollInterval={1000} variables={{limit: this.limit, offset: this.state.paginador.offset, sellerId: sellerId}}>
                 {({ loading, error, data, startPolling, stopPolling }) => {
                     if(loading) return "Cargando...";
                     if (error) return `Error: ${error.message}`;
