@@ -13,7 +13,7 @@
     "apollo-server-express": "^2.3.1",
     "bcrypt": "^3.0.6",
     "dotenv": "^7.0.0",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
     "graphql-import": "^0.7.1",
